@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>DELETE</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/admin/delete}" th:object="${user}" method="post">
+    <label for="id">Id</label>
+    <input readonly type="text" th:field="*{id}" id="id" placeholder="Id"><br>
+
+    <label for="username">Username</label>
+    <input readonly type="text" th:field="*{username}" id="username" placeholder="Username"><br>
+
+    <label for="password">Password</label>
+    <input readonly type="text" th:field="*{password}" id="password" placeholder="Password"><br>
+
+    <label for="email">Email</label>
+    <input readonly type="text" th:field="*{email}" id="email" placeholder="Email"><br>
+
+    User roles (checkboxes):
+    <div th:each="role : ${allRoles}">
+        <label>
+            <input readonly th:value="${role.id}" th:field="*{roles}" type="checkbox"/>
+            <span th:text="${role.name}" th:remove="tag"> </span>
+        </label>
+    </div>
+
+    <input type="submit" value="Delete user">
+</form>
+
+
+</body>
+</html>
