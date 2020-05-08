@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -24,14 +25,23 @@ public class AdminController {
     }
 
     @GetMapping
-    public String printUsers(ModelMap model) {
+    public String printUsers(ModelMap model, Principal principal) {
+
+        String username = principal.getName();
+        User admin = (User) userService.loadUserByUsername(username);
         List<User> users = userService.findAll();
+        model.addAttribute("admin", admin);
         model.addAttribute("users", users);
+        model.addAttribute("user", new User());
+        model.addAttribute("allRoles", roleService.findAll());
         return "admin_page";
     }
 
     @GetMapping(value = "/add")
-    public String newUserPage(ModelMap model) {
+    public String newUserPage(ModelMap model, Principal principal) {
+        String username = principal.getName();
+        User admin = (User) userService.loadUserByUsername(username);
+        model.addAttribute("admin", admin);
         model.addAttribute("user", new User());
         model.addAttribute("allRoles", roleService.findAll());
         return "add_page";
@@ -43,30 +53,35 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/update/{id}")
-    public String updateUserPage(@PathVariable("id") long id, ModelMap model) {
-        model.addAttribute("user", userService.findById(id));
-        model.addAttribute("allRoles", roleService.findAll());
-        return "update_page";
-    }
+//    @GetMapping(value = "/update/{id}")
+//    public String updateUserPage(@PathVariable("id") long id, ModelMap model) {
+//        model.addAttribute("user", userService.findById(id));
+//        model.addAttribute("allRoles", roleService.findAll());
+//        return "update_page";
+//    }
 
     @PostMapping(value = "/update")
     public String updateUser(@ModelAttribute User user) {
-        System.out.println(user.getId());
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/delete/{id}")
-    public String deleteUserPage(@PathVariable("id") long id, ModelMap model) {
-        model.addAttribute("user", userService.findById(id));
-        model.addAttribute("allRoles", roleService.findAll());
-        return "delete_page";
-    }
+//    @GetMapping(value = "/delete/{id}")
+//    public String deleteUserPage(@PathVariable("id") long id, ModelMap model) {
+//        model.addAttribute("user", userService.findById(id));
+//        model.addAttribute("allRoles", roleService.findAll());
+//        return "delete_page";
+//    }
 
     @PostMapping(value = "/delete")
     public String deleteUser(@ModelAttribute User user) {
         userService.delete(user);
         return "redirect:/admin";
+    }
+
+    @RequestMapping(value = "/getOne")
+    @ResponseBody
+    public User getOne(Long id) {
+        return userService.findById(id);
     }
 }

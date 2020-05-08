@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //Настройка для входа в систему
                 .formLogin()
-                .loginPage("/login")
+                //.loginPage("/login")
                 //Перенарпавление на главную страницу после успешного входа
                 .successHandler(new LoginSuccessHandler())
                 .permitAll()

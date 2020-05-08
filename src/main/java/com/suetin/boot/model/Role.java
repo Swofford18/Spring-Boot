@@ -1,5 +1,7 @@
 package com.suetin.boot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.HashSet;
@@ -20,6 +22,7 @@ public class Role implements GrantedAuthority {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     public Set<User> getUsers() {
