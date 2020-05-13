@@ -18,4 +18,12 @@ public class RoleService {
     public List<Role> findAll() {
         return roleRepository.findAll();
     }
+
+    public Role getAdminRole() {
+        return roleRepository.getAdminRole();
+    }
+
+    public Role getUserRole() {
+        return roleRepository.getUserRole();
+    }
 }

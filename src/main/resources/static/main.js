@@ -1,39 +1,204 @@
+function ajaxGetAllUsers() {
+    $.ajax({
+        type : "GET",
+        url : "allUsers",
+        success : function(data) {
+
+            for (var i = 0; i < data.length; i++) {
+
+                var roles = "";
+
+                for (var j = 0; j < data[i].roles.length; j++) {
+                    var role = data[i].roles[j].name;
+                    var toRemove = 'ROLE_';
+                    var r = role.replace(toRemove,'');
+                    roles += r + " ";
+                }
+
+                var user = "<tr>" +
+                    "<th>" + data[i].id + "</th>" +
+                    "<td>" + data[i].username + "</td>" +
+                    "<td>" + data[i].email + "</td>" +
+                    "<td>" + roles + "</td>" +
+                    "<td><button class=\"edit-but btn btn-info\" value=" + data[i].id + ">Edit</button></td>" +
+                    "<td><button class=\"delete-but btn btn-danger\" value=" + data[i].id + ">Delete</button></td>" +
+                    "</tr>";
+                $("#tbody").append(user)
+            }
+
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+        }
+    });
+}
+
+function fillEditInputs(id) {
+    $.ajax({
+        type : "GET",
+        url : "getOne?id=" + id,
+        success : function(data) {
+            $('#idEdit').val(data.id);
+            $('#usernameEdit').val(data.username);
+            $('#passwordEdit').val(data.password);
+            $('#emailEdit').val(data.email);
 
 
-$('document').ready(function () {
+            $('#editModal').modal();
 
-    $('.edit-but').on('click',function(event){
+            console.log("success: ", data);
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+        }
+    });
+}
 
-        event.preventDefault();
+function fillDeleteInputs(id) {
+    $.ajax({
+        type : "GET",
+        url : "getOne?id=" + id,
+        success : function(data) {
+            $('#idDel').val(data.id);
+            $('#usernameDel').val(data.username);
+            $('#passwordDel').val(data.password);
+            $('#emailDel').val(data.email);
 
-        var href = $(this).attr('href');
 
-        $.get(href, function(user, status){
-            $('#idEdit').val(user.id);
-            $('#usernameEdit').val(user.username);
-            $('#passwordEdit').val(user.password);
-            $('#emailEdit').val(user.email);
+            $('#deleteModal').modal();
+
+            console.log("success: ", data);
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+        }
+    });
+}
+
+function ajaxPutCreateUser() {
+
+    // PREPARE FORM DATA
+    var formData = {
+        username : $("#username").val(),
+        password : $("#password").val(),
+        email : $("#email").val(),
+        roles : $("#createRoles").val()
+    }
+
+    // DO POST
+    $.ajax({
+        type : "PUT",
+        contentType : "application/json",
+        url : "addUser",
+        data : JSON.stringify(formData),
+        dataType : 'json',
+        success : function() {
+            alert("User added");
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+        }
+    });
+}
+
+function ajaxPostEditUser() {
+
+    // PREPARE FORM DATA
+    var formData = {
+        id : $("#idEdit").val(),
+        username : $("#usernameEdit").val(),
+        password : $("#passwordEdit").val(),
+        email : $("#emailEdit").val(),
+        roles : $("#editRoles").val()
+    }
+
+    // DO POST
+    $.ajax({
+        type : "POST",
+        contentType : "application/json",
+        url : "editUser",
+        data : JSON.stringify(formData),
+        dataType : 'json',
+        success : function() {
+            console.log("success!");
+            refreshTable();
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+        }
+    });
+}
+
+function ajaxDeleteUser() {
+
+    // PREPARE FORM DATA
+    var formData = {
+        id : $("#idDel").val(),
+        username : $("#usernameDel").val(),
+        password : $("#passwordDel").val(),
+        email : $("#emailDel").val()
+    }
+
+    // DO POST
+    $.ajax({
+        type : "DELETE",
+        contentType : "application/json",
+        url : "deleteUser",
+        data : JSON.stringify(formData),
+        dataType : 'json',
+        success : function() {
+            console.log("success!");
+            refreshTable();
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+        }
+    });
+}
+
+function refreshTable() {
+    $("#tbody").empty();
+    ajaxGetAllUsers();
+}
+
+
+$(document).ready(
+    function () {
+
+        ajaxGetAllUsers();
+
+        // SUBMIT FORM
+        $("#createForm").submit(function(event) {
+            // Prevent the form from submitting via the browser.
+            event.preventDefault();
+            ajaxPutCreateUser();
         });
 
-        $('#editModal').modal();
-
-    });
-
-    $('.delete-but').on('click',function(event){
-
-        event.preventDefault();
-
-        var href = $(this).attr('href');
-
-        $.get(href, function(user, status){
-            $('#idDel').val(user.id);
-            $('#usernameDel').val(user.username);
-            $('#passwordDel').val(user.password);
-            $('#emailDel').val(user.email);
+        $("#nav-home-tab").click(function () {
+            refreshTable();
         });
 
-        $('#deleteModal').modal();
+        $('#tbody').on('click', '.edit-but', function(){
+            var id = $(this).val();
+            fillEditInputs(id)
+        });
 
-    });
+        $("#editForm").submit(function (event) {
+            event.preventDefault();
+            ajaxPostEditUser();
 
-});
+            $('#editModal').modal('hide');
+        });
+
+        $('#tbody').on('click', '.delete-but', function(){
+            var id = $(this).val();
+            fillDeleteInputs(id)
+        });
+
+        $("#deleteForm").submit(function (event) {
+            event.preventDefault();
+            ajaxDeleteUser();
+
+            $('#deleteModal').modal('hide');
+        });
+})

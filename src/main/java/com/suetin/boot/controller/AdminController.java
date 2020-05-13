@@ -78,10 +78,4 @@ public class AdminController {
         userService.delete(user);
         return "redirect:/admin";
     }
-
-    @RequestMapping(value = "/getOne")
-    @ResponseBody
-    public User getOne(Long id) {
-        return userService.findById(id);
-    }
 }
