@@ -1,7 +1,7 @@
 package com.suetin.boot.controller;
 
 import com.suetin.boot.model.User;
-import com.suetin.boot.service.UserService;
+import com.suetin.boot.service.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +12,9 @@ import java.security.Principal;
 @Controller
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 

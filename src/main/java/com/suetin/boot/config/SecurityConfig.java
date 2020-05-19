@@ -9,15 +9,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.suetin.boot.config.handler.LoginSuccessHandler;
-import com.suetin.boot.service.UserService;
+import com.suetin.boot.service.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserServiceImpl userService) {
         this.userService = userService;
     }
 

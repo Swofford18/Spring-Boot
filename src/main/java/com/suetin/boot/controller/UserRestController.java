@@ -2,10 +2,8 @@ package com.suetin.boot.controller;
 
 import com.suetin.boot.model.Role;
 import com.suetin.boot.model.User;
-import com.suetin.boot.service.RoleService;
-import com.suetin.boot.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.suetin.boot.service.RoleServiceImpl;
+import com.suetin.boot.service.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -15,10 +13,10 @@ import java.util.Set;
 @RestController
 public class UserRestController {
 
-    private UserService userService;
-    private RoleService roleService;
+    private UserServiceImpl userService;
+    private RoleServiceImpl roleService;
 
-    public UserRestController(UserService userService, RoleService roleService) {
+    public UserRestController(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }

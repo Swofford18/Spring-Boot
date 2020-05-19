@@ -2,28 +2,14 @@ package com.suetin.boot.service;
 
 import com.suetin.boot.model.Role;
 import com.suetin.boot.repository.RoleRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class RoleService {
+public interface RoleService {
 
-    private RoleRepository roleRepository;
+    List<Role> findAll();
 
-    public RoleService(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
+    Role getAdminRole();
 
-    public List<Role> findAll() {
-        return roleRepository.findAll();
-    }
-
-    public Role getAdminRole() {
-        return roleRepository.getAdminRole();
-    }
-
-    public Role getUserRole() {
-        return roleRepository.getUserRole();
-    }
+    Role getUserRole();
 }

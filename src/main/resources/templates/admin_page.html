@@ -230,9 +230,9 @@
                         <input type="text" readonly class="form-control" id="emailDel" th:field="*{email}">
                     </div>
                     <label><b>Role</b></label>
-                    <select class="custom-select" disabled multiple size="2" id="deleteRoles" th:field="*{roles}">
-                        <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}">
-                        </option>
+                    <select class="custom-select" disabled multiple size="2" id="deleteRoles">
+                        <option name="ROLE_ADMIN" value="ROLE_ADMIN">ADMIN</option>
+                        <option name="ROLE_USER" value="ROLE_USER">USER</option>
                     </select>
                 </div>
                 <div class="modal-footer">

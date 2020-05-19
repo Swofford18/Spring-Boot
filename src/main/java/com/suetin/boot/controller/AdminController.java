@@ -1,14 +1,12 @@
 package com.suetin.boot.controller;
 
 import com.suetin.boot.model.User;
-import com.suetin.boot.service.RoleService;
-import com.suetin.boot.service.UserService;
+import com.suetin.boot.service.RoleServiceImpl;
+import com.suetin.boot.service.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.List;
 
@@ -16,10 +14,10 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private UserService userService;
-    private RoleService roleService;
+    private UserServiceImpl userService;
+    private RoleServiceImpl roleService;
 
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
